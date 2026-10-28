@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Peer Review — Investigating AP Statistics Enrollment</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/peer-review.js" defer></script>
+</head>
+<body>
+<main class="sheet" id="peerReviewPage" hidden>
+  <div class="student-bar">
+    <div class="classroom-id-field">
+      <input id="classroomId" type="text" placeholder="Classroom ID" aria-label="Classroom ID" readonly>
+    </div>
+    <span class="classroom-status" id="classroomStatus" role="status" aria-live="polite"></span>
+  </div>
+
+  <header>
+    <h1>Investigating AP Statistics Enrollment</h1>
+    <p class="intro">Now, review another student's graph about AP Statistics enrollment across the four schools.</p>
+  </header>
+
+  <section class="peer-graph-section" aria-label="Assigned student's graph">
+    <div class="peer-graph-column">
+      <h2 id="peerGraphTitle" class="peer-graph-title"></h2>
+      <div class="peer-graph-wrap">
+        <canvas id="peerGraph" aria-label="Assigned student's graph" role="img"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section class="peer-response-panels" aria-label="Assigned student's claim and questions">
+    <aside class="data-panel peer-claim-panel">
+      <h3>Claim</h3>
+      <p id="peerStudentClaim" class="peer-student-claim"></p>
+    </aside>
+    <aside class="data-panel peer-question-panel">
+      <h3>Question</h3>
+      <p id="peerStudentQuestion" class="peer-student-question"></p>
+    </aside>
+  </section>
+
+  <section id="claim">
+    <h2>0&nbsp; Pre-feedback</h2>
+    <p>Before the student's claim and questions are revealed, what claim do you think their graph makes?</p>
+    <textarea id="claimText" class="claim-box" aria-label="Your claim"></textarea>
+    <div class="nav-row">
+      <button class="pill" id="onToFeedback" type="button">On to Feedback</button>
+      <span id="feedbackRevealNote" class="feedback-reveal-note" hidden>The student's intended claim and questions are now below the graph.</span>
+    </div>
+  </section>
+
+  <section id="clarify" hidden>
+    <h2>1&nbsp; Clarify</h2>
+    <p>Ask questions to understand the student's thinking. </p>
+    <p>Hint: What is one thing you'd like to understand better about their claim or graph?</p>
+
+    <textarea id="clarifyText" aria-label="Questions for the student"></textarea>
+    <div class="nav-row">
+      <button class="pill" id="onToValue" type="button">On to Value</button>
+    </div>
+  </section>
+
+  <section id="value" hidden>
+    <h2>2&nbsp; Value</h2>
+    <p>Give the student feedback on what they do well.</p>
+    <textarea id="valueText" aria-label="What the student does well"></textarea>
+    <div class="nav-row">
+      <button class="pill" id="onToStateConcerns" type="button">On to State Concerns</button>
+    </div>
+  </section>
+
+  <section id="stateConcerns" hidden>
+    <h2>3&nbsp; State Concerns</h2>
+    <p>Identify areas that may need reconsideration.</p>
+    <p>Hint: Does the graph provide enough evidence to support the student's claim? Why or why not?</p>
+    <textarea id="concernsText" aria-label="What the student does poorly"></textarea>
+    <div class="nav-row">
+      <button class="pill" id="onToSuggest" type="button">On to Suggest</button>
+    </div>
+  </section>
+
+  <section id="suggest" hidden>
+    <h2>4&nbsp; Suggest</h2>
+    <p>Offer actionable feedback for improvement.</p>
+    <p>Hint: What is one change that could make the graph clearer or more effective? Or, would another type of graph help communicate the claim better? If so, which one and why?
+</p>
+    <textarea id="suggestionsText" aria-label="Ways the student can improve their graph"></textarea>
+    <div class="nav-row">
+      <button class="pill" id="sendToStudent" type="button">Send to Student</button>
+    </div>
+  </section>
+</main>
+</body>
+</html>

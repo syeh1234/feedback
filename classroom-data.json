@@ -1,0 +1,718 @@
+{
+  "classrooms": {
+    "111": {
+      "id": "111",
+      "createdAt": "2026-10-26T00:08:14.236Z",
+      "status": "closed",
+      "participants": {
+        "514399616027": {
+          "joinedAt": "2026-10-26T00:08:14.237Z",
+          "accessToken": "82eef848fbf79bfd190699acab0f52866305405c8ebc9ee3e1e6de2583f52709"
+        },
+        "474324487178": {
+          "joinedAt": "2026-10-26T00:08:34.965Z",
+          "accessToken": "c86d808370282f99255193a64f729737d20f03cc7dbe90d8c13849e84a487b37"
+        }
+      },
+      "submissions": {
+        "474324487178": {
+          "submittedAt": "2026-10-26T00:08:36.858Z",
+          "sessionId": "474324487178",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        },
+        "514399616027": {
+          "submittedAt": "2026-10-26T00:08:41.592Z",
+          "sessionId": "514399616027",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "514399616027": "474324487178",
+        "474324487178": "514399616027"
+      },
+      "closedAt": "2026-10-26T00:08:43.304Z"
+    },
+    "123": {
+      "id": "123",
+      "createdAt": "2026-10-25T20:45:05.005Z",
+      "status": "closed",
+      "participants": {
+        "228745462932": {
+          "joinedAt": "2026-10-25T20:45:05.005Z",
+          "accessToken": "59508faa05fcb931e64d771f7ecb924ad3920069d9253ac8cefda3aaa32700c9"
+        },
+        "216151308858": {
+          "joinedAt": "2026-10-25T20:45:07.540Z",
+          "accessToken": "70f8e8c312b5c5feefaa5bca3c08e476701f11dbd21d0074d1d0c2a6d92fd10e"
+        }
+      },
+      "submissions": {
+        "228745462932": {
+          "submittedAt": "2026-10-25T20:45:30.218Z",
+          "sessionId": "228745462932",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        },
+        "216151308858": {
+          "submittedAt": "2026-10-25T20:45:33.801Z",
+          "sessionId": "216151308858",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "216151308858": "228745462932",
+        "228745462932": "216151308858"
+      },
+      "closedAt": "2026-10-25T20:45:35.535Z"
+    },
+    "1111": {
+      "id": "1111",
+      "createdAt": "2026-10-28T05:58:25.585Z",
+      "status": "open",
+      "participants": {
+        "248410836405": {
+          "joinedAt": "2026-10-28T05:58:25.590Z",
+          "accessToken": "2289e225744379aea2743bc17a833312d1afa879095e7a29bf66f917444e295d"
+        }
+      },
+      "submissions": {
+        "248410836405": {
+          "submittedAt": "2026-10-28T05:58:28.603Z",
+          "sessionId": "248410836405",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {}
+    },
+    "2222": {
+      "id": "2222",
+      "createdAt": "2026-10-26T01:22:46.235Z",
+      "status": "closed",
+      "participants": {
+        "427784399393": {
+          "joinedAt": "2026-10-26T01:22:46.235Z",
+          "accessToken": "70166f64dc23870c6fbaab5cb3a040803d144c79b518504a687b147be0afad11"
+        },
+        "103389255833": {
+          "joinedAt": "2026-10-26T01:22:48.952Z",
+          "accessToken": "221ee657e464d4c836d9688c43f315247f72723e2ba9002cc0fe55e557473e77"
+        }
+      },
+      "submissions": {
+        "427784399393": {
+          "submittedAt": "2026-10-26T01:26:02.540Z",
+          "sessionId": "427784399393",
+          "claim": "Even though Dawn High School has the most number of students enrolled in AP Statistics, Fog Crest Academy has the greatest percentage of students enrolled in AP Statistics.",
+          "chartType": "bar",
+          "graphTitle": "Percentage of students enrolled in AP Statistics by school",
+          "categories": "School",
+          "series": "Categories: School, Percentage",
+          "xAxisLabel": "School",
+          "yAxisLabel": "Percentage of students enrolled in AP Statistics",
+          "additionalQuestions": "Does the total AP enrollment differ by school? Are students' interests different by school? Is AP Statistics a requirement for some?",
+          "graphData": {
+            "categories": [
+              "Dawn High School",
+              "Fog Crest Academy",
+              "Nova Learning Institute",
+              "Talons High School"
+            ],
+            "series": [
+              {
+                "name": "Percentage",
+                "values": [
+                  11.074918566775244,
+                  36.05150214592275,
+                  2.493765586034913,
+                  7.419354838709677
+                ]
+              }
+            ],
+            "categoriesField": "School"
+          }
+        },
+        "103389255833": {
+          "submittedAt": "2026-10-26T01:28:58.809Z",
+          "sessionId": "103389255833",
+          "claim": "The percentage enrollment of students in AP Statistics across schools is varied.",
+          "chartType": "bar",
+          "graphTitle": "Schoolwide % Enrollment in AP Statistics",
+          "categories": "School",
+          "series": "Categories: School, %",
+          "xAxisLabel": "By school",
+          "yAxisLabel": "Percentage",
+          "additionalQuestions": "What are the school curriculums at these schools? What are prerequisites for AP Statistics? What are the enrollment for other AP courses across the board? What is the breakdown of student majors on college applications across the board.",
+          "graphData": {
+            "categories": [
+              "Dawn High School",
+              "Fog Crest Academy",
+              "Nova Learning Institute",
+              "Talons High School"
+            ],
+            "series": [
+              {
+                "name": "%",
+                "values": [
+                  11.074918566775244,
+                  36.05150214592275,
+                  2.493765586034913,
+                  7.419354838709677
+                ]
+              }
+            ],
+            "categoriesField": "School"
+          }
+        }
+      },
+      "assignments": {
+        "427784399393": "103389255833",
+        "103389255833": "427784399393"
+      },
+      "closedAt": "2026-10-26T01:29:26.375Z"
+    },
+    "2432": {
+      "id": "2432",
+      "createdAt": "2026-10-28T17:05:22.486Z",
+      "status": "closed",
+      "participants": {
+        "255984766404": {
+          "joinedAt": "2026-10-28T17:05:22.488Z",
+          "accessToken": "c500f09a7677b7330abc9224496831401f0a0b8195faa22e3b697565ffb388f6"
+        },
+        "419509986656": {
+          "joinedAt": "2026-10-28T17:05:26.755Z",
+          "accessToken": "cef1cfdd4dfbf069996ceefa1df7d647b237f30bafa79e033f249be388e0386d"
+        }
+      },
+      "submissions": {
+        "419509986656": {
+          "submittedAt": "2026-10-28T17:05:28.505Z",
+          "sessionId": "419509986656",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        },
+        "255984766404": {
+          "submittedAt": "2026-10-28T17:05:31.815Z",
+          "sessionId": "255984766404",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "419509986656": "255984766404",
+        "255984766404": "419509986656"
+      },
+      "closedAt": "2026-10-28T17:05:39.798Z"
+    },
+    "11231": {
+      "id": "11231",
+      "createdAt": "2026-10-28T00:37:04.656Z",
+      "status": "closed",
+      "participants": {
+        "352197680904": {
+          "joinedAt": "2026-10-28T00:37:04.656Z",
+          "accessToken": "7504998b085696798eb7e50622c721a0243b26818987a4fc497af64de9dd3549"
+        },
+        "862544703826": {
+          "joinedAt": "2026-10-28T00:37:07.268Z",
+          "accessToken": "a86ff2229b2a1cdfe6211222818e2517a16e091cdaac7e69d96777801bb10176"
+        }
+      },
+      "submissions": {
+        "352197680904": {
+          "submittedAt": "2026-10-28T00:38:16.055Z",
+          "sessionId": "352197680904",
+          "claim": "claim",
+          "chartType": "bar",
+          "graphTitle": "title",
+          "categories": "School",
+          "series": "Categories: School, percentage",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "is it hard to take ap stats at each schoool",
+          "graphData": {
+            "categories": [
+              "Dawn High School",
+              "Fog Crest Academy",
+              "Nova Learning Institute",
+              "Talons High School"
+            ],
+            "series": [
+              {
+                "name": "percentage",
+                "values": [
+                  11.074918566775244,
+                  36.05150214592275,
+                  2.493765586034913,
+                  7.419354838709677
+                ]
+              }
+            ],
+            "categoriesField": "School"
+          }
+        },
+        "862544703826": {
+          "submittedAt": "2026-10-28T00:38:19.413Z",
+          "sessionId": "862544703826",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "352197680904": "862544703826",
+        "862544703826": "352197680904"
+      },
+      "closedAt": "2026-10-28T00:38:21.207Z"
+    },
+    "1241223": {
+      "id": "1241223",
+      "createdAt": "2026-10-28T00:57:30.856Z",
+      "status": "closed",
+      "participants": {
+        "409973638303": {
+          "joinedAt": "2026-10-28T00:57:30.857Z",
+          "accessToken": "3bb6edea20ae701caec48ca30973d2092807380fb9c5307a05b55298dde81f99"
+        },
+        "910970490837": {
+          "joinedAt": "2026-10-28T00:57:44.632Z",
+          "accessToken": "1dfc8a3ca8420d9924815308179513bce75f2e26d03fd1b3b5e2658fa30b8a3b"
+        }
+      },
+      "submissions": {
+        "409973638303": {
+          "submittedAt": "2026-10-28T00:57:33.150Z",
+          "sessionId": "409973638303",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        },
+        "910970490837": {
+          "submittedAt": "2026-10-28T00:57:46.169Z",
+          "sessionId": "910970490837",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "409973638303": "910970490837",
+        "910970490837": "409973638303"
+      },
+      "closedAt": "2026-10-28T00:57:47.237Z"
+    },
+    "1414141": {
+      "id": "1414141",
+      "createdAt": "2026-10-28T06:00:22.068Z",
+      "status": "closed",
+      "participants": {
+        "137745197651": {
+          "joinedAt": "2026-10-28T06:00:22.069Z",
+          "accessToken": "8dd9fc255eb570722c578b3de1566819441ea40d77a8bc7fe807eb8b4dcb9f9c"
+        },
+        "390523109373": {
+          "joinedAt": "2026-10-28T06:00:31.222Z",
+          "accessToken": "abc1008d262a025ed200ec6580b68c9c42389cf94b8b55deba3e66989709532c"
+        }
+      },
+      "submissions": {
+        "390523109373": {
+          "submittedAt": "2026-10-28T06:00:32.565Z",
+          "sessionId": "390523109373",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        },
+        "137745197651": {
+          "submittedAt": "2026-10-28T06:00:34.622Z",
+          "sessionId": "137745197651",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "390523109373": "137745197651",
+        "137745197651": "390523109373"
+      },
+      "closedAt": "2026-10-28T06:00:35.379Z"
+    },
+    "000": {
+      "id": "000",
+      "createdAt": "2026-10-26T00:17:57.909Z",
+      "status": "closed",
+      "participants": {
+        "660972296182": {
+          "joinedAt": "2026-10-26T00:17:57.909Z",
+          "accessToken": "d200ff4257d5c4d00af7d5f071e080dd8224d7ae6ab2c4588352fa4d6bb0eaed"
+        },
+        "355956168113": {
+          "joinedAt": "2026-10-26T00:18:00.997Z",
+          "accessToken": "e6c0c017d445433022974dea7cb322ba1c208840ff2aabae7a33f4e36cf5c99f"
+        }
+      },
+      "submissions": {
+        "355956168113": {
+          "submittedAt": "2026-10-26T00:18:08.034Z",
+          "sessionId": "355956168113",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        },
+        "660972296182": {
+          "submittedAt": "2026-10-26T00:18:10.871Z",
+          "sessionId": "660972296182",
+          "claim": "",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "(none)",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "",
+          "graphData": {
+            "categories": [],
+            "series": [],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "660972296182": "355956168113",
+        "355956168113": "660972296182"
+      },
+      "closedAt": "2026-10-26T00:18:12.396Z"
+    },
+    "TEST1": {
+      "id": "TEST1",
+      "createdAt": "2026-10-28T18:16:36.615Z",
+      "status": "closed",
+      "participants": {
+        "806718379989": {
+          "joinedAt": "2026-10-28T18:16:36.616Z",
+          "accessToken": "3d484efb4be3014b313e81b581c6677a55a9beb6f3efcd0985bcf10293a535fa"
+        },
+        "396777207216": {
+          "joinedAt": "2026-10-28T18:16:37.384Z",
+          "accessToken": "3d29563af98472d49a8110c11f3275351a8b2ff1800dc72f1e23548140470e69"
+        }
+      },
+      "submissions": {
+        "396777207216": {
+          "submittedAt": "2026-10-28T18:38:09.405Z",
+          "sessionId": "396777207216",
+          "claim": "The distribution shapes might looks the same between total student enrollment and AP enrollment.",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "(none)",
+          "series": "Total student enrollment, AP Statistics enrollment",
+          "xAxisLabel": "Schools",
+          "yAxisLabel": "Enrollment number",
+          "additionalQuestions": "The distribution shape actually didn't look same.  Maybe the AP statistic enrollment didn't associate with the size of the school?",
+          "graphData": {
+            "categories": [
+              "Item 1",
+              "Item 2",
+              "Item 3",
+              "Item 4"
+            ],
+            "series": [
+              {
+                "name": "Total student enrollment",
+                "values": [
+                  921,
+                  233,
+                  401,
+                  1240
+                ]
+              },
+              {
+                "name": "AP Statistics enrollment",
+                "values": [
+                  102,
+                  84,
+                  10,
+                  92
+                ]
+              }
+            ],
+            "categoriesField": ""
+          }
+        },
+        "806718379989": {
+          "submittedAt": "2026-10-28T18:38:43.669Z",
+          "sessionId": "806718379989",
+          "claim": "Fog Crest Academy has a big enrollment in AP Statistics",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "School",
+          "series": "Categories: School, AP Statistics enrollment",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "well i don't have any questions but i am left wondering if students choose to enroll or are forced.wait i would like the fration of students enrolled in class to students in school",
+          "graphData": {
+            "categories": [
+              "Dawn High School",
+              "Fog Crest Academy",
+              "Nova Learning Institute",
+              "Talons High School"
+            ],
+            "series": [
+              {
+                "name": "AP Statistics enrollment",
+                "values": [
+                  102,
+                  84,
+                  10,
+                  92
+                ]
+              }
+            ],
+            "categoriesField": "School"
+          }
+        }
+      },
+      "assignments": {
+        "396777207216": "806718379989",
+        "806718379989": "396777207216"
+      },
+      "closedAt": "2026-10-28T18:38:57.381Z"
+    },
+    "TEST2": {
+      "id": "TEST2",
+      "createdAt": "2026-10-28T19:02:15.550Z",
+      "status": "closed",
+      "participants": {
+        "837572255957": {
+          "joinedAt": "2026-10-28T19:02:15.553Z",
+          "accessToken": "6bd8c04cac44148f08d7bd5d63308cfd6b5c3c2e9943477dc96a0da4f4b28f5f"
+        },
+        "911501338618": {
+          "joinedAt": "2026-10-28T19:02:17.629Z",
+          "accessToken": "8c5d2ace5c8edf892ab8f58c94a1b3e01a8e92c5e13cc8c2cdc79134157b2ac6"
+        }
+      },
+      "submissions": {
+        "837572255957": {
+          "submittedAt": "2026-10-28T19:07:55.002Z",
+          "sessionId": "837572255957",
+          "claim": "The ratio of students enrolled in statistics to the total number of students will help us understand the interest levels. We can see the highest interest in Fog Crest Academy and the lowest in Talons High School.",
+          "chartType": "bar",
+          "graphTitle": "",
+          "categories": "School",
+          "series": "Categories: School, AP Statistics enrollment, Total student enrollment",
+          "xAxisLabel": "",
+          "yAxisLabel": "",
+          "additionalQuestions": "I think I would want to understand the motivations of students to enrol or not in AP Stats to better understand how we can increase enrollment.",
+          "graphData": {
+            "categories": [
+              "Dawn High School",
+              "Fog Crest Academy",
+              "Nova Learning Institute",
+              "Talons High School"
+            ],
+            "series": [
+              {
+                "name": "AP Statistics enrollment",
+                "values": [
+                  102,
+                  84,
+                  10,
+                  92
+                ]
+              },
+              {
+                "name": "Total student enrollment",
+                "values": [
+                  921,
+                  233,
+                  401,
+                  1240
+                ]
+              }
+            ],
+            "categoriesField": "School"
+          }
+        },
+        "911501338618": {
+          "submittedAt": "2026-10-28T19:10:05.768Z",
+          "sessionId": "911501338618",
+          "claim": "Fog Crest Academy has the highest enrollment percentage of students who are enrolled in AP stats among the four school, and Nova Learning institute has the lowest enrollment percentage.",
+          "chartType": "bar",
+          "graphTitle": "Comparison between Enrollment Percentage across Four Schools",
+          "categories": "(none)",
+          "series": "Percentage of students enrolled in AP Stats",
+          "xAxisLabel": "Schools",
+          "yAxisLabel": "Percentage of students enrolled in AP stats",
+          "additionalQuestions": "The school names on the x-axis are not clearly identified, and the specific numeric value should be labeled on the top of each bar to better visualize the values.",
+          "graphData": {
+            "categories": [
+              "Item 1",
+              "Item 2",
+              "Item 3",
+              "Item 4"
+            ],
+            "series": [
+              {
+                "name": "Percentage of students enrolled in AP Stats",
+                "values": [
+                  11.074918566775244,
+                  36.05150214592275,
+                  2.493765586034913,
+                  7.419354838709677
+                ]
+              }
+            ],
+            "categoriesField": ""
+          }
+        }
+      },
+      "assignments": {
+        "911501338618": "837572255957",
+        "837572255957": "911501338618"
+      },
+      "closedAt": "2026-10-28T19:10:11.591Z"
+    }
+  }
+}
