@@ -524,6 +524,7 @@
         return;
       }
       classroomInput.value = classroomId;
+      classroomInput.closest(".student-bar")?.classList.add("classroom-joined");
       const submission = state.assignedSubmission;
       if (submission) {
         assignedSubmission = submission;
