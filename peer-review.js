@@ -15,6 +15,13 @@
   const stateConcernsSection = document.getElementById("stateConcerns");
   const onToSuggest = document.getElementById("onToSuggest");
   const suggestSection = document.getElementById("suggest");
+  const sendToStudent = document.getElementById("sendToStudent");
+  const completionPanel = document.getElementById("reviewCompletePanel");
+  const completionStatus = document.getElementById("reviewCompletionStatus");
+  const downloadButton = document.getElementById("downloadAllResponses");
+  let reviewState = null;
+  let sending = false;
+  let statusTimer = null;
   const palette = ["#3478b8", "#e28b35", "#32936f", "#9b70b5", "#d45d79", "#7b8491"];
   let assignedSubmission = null;
   const storageKeys = {
@@ -389,6 +396,110 @@
     }
   }
 
+  function setReviewComplete(state) {
+    reviewState = state;
+    if (!state.reviewSubmitted) return;
+    document.getElementById("claim").hidden = true;
+    clarifySection.hidden = true;
+    valueSection.hidden = true;
+    stateConcernsSection.hidden = true;
+    suggestSection.hidden = true;
+    completionPanel.hidden = false;
+    const remaining = Math.max(0, state.reviewTargetCount - state.reviewCount);
+    completionStatus.textContent = state.allReviewsSubmitted
+      ? `Everyone in classroom ${state.classroomId} has submitted peer feedback. You can now download all classroom responses.`
+      : `Your feedback has been saved. Waiting for ${remaining} more ${remaining === 1 ? "student" : "students"} to finish (${state.reviewCount} of ${state.reviewTargetCount} submitted).`;
+    downloadButton.hidden = !state.allReviewsSubmitted;
+  }
+
+  async function fetchStatus() {
+    const classroomId = sessionStorage.getItem(storageKeys.classroomId);
+    const sessionId = sessionStorage.getItem(storageKeys.sessionId);
+    const accessToken = sessionStorage.getItem(storageKeys.accessToken);
+    const response = await fetch(
+      `/api/classrooms/${encodeURIComponent(classroomId)}/status?sessionId=${encodeURIComponent(sessionId)}`,
+      { headers: { "x-classroom-token": accessToken } }
+    );
+    const state = await response.json();
+    if (!response.ok) throw new Error(state.error || "Could not refresh classroom status.");
+    reviewState = state;
+    if (state.reviewSubmitted) setReviewComplete(state);
+    else status.textContent = `Classroom ${classroomId} is closed. Peer review is ready. ${state.reviewCount} of ${state.reviewTargetCount} reviews submitted.`;
+    return state;
+  }
+
+  sendToStudent?.addEventListener("click", async () => {
+    if (sending || reviewState?.reviewSubmitted || !assignedSubmission) return;
+    const classroomId = sessionStorage.getItem(storageKeys.classroomId);
+    const sessionId = sessionStorage.getItem(storageKeys.sessionId);
+    const accessToken = sessionStorage.getItem(storageKeys.accessToken);
+    sending = true;
+    sendToStudent.disabled = true;
+    sendToStudent.textContent = "Sending…";
+    status.textContent = "Saving your peer review…";
+    try {
+      const response = await fetch(`/api/classrooms/${encodeURIComponent(classroomId)}/reviews`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          sessionId,
+          accessToken,
+          review: {
+            preFeedback: document.getElementById("claimText").value,
+            clarify: document.getElementById("clarifyText").value,
+            value: document.getElementById("valueText").value,
+            concerns: document.getElementById("concernsText").value,
+            suggestions: document.getElementById("suggestionsText").value
+          }
+        })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Your peer review could not be saved.");
+      setReviewComplete(result);
+      await fetchStatus();
+    } catch (error) {
+      status.textContent = error.message;
+      sendToStudent.disabled = false;
+      sendToStudent.textContent = "Send to Student";
+    } finally {
+      sending = false;
+    }
+  });
+
+  downloadButton?.addEventListener("click", async () => {
+    if (!reviewState?.allReviewsSubmitted) return;
+    const classroomId = sessionStorage.getItem(storageKeys.classroomId);
+    const sessionId = sessionStorage.getItem(storageKeys.sessionId);
+    const accessToken = sessionStorage.getItem(storageKeys.accessToken);
+    downloadButton.disabled = true;
+    downloadButton.textContent = "Preparing download…";
+    try {
+      const response = await fetch(
+        `/api/classrooms/${encodeURIComponent(classroomId)}/reviews/download?sessionId=${encodeURIComponent(sessionId)}`,
+        { headers: { "x-classroom-token": accessToken } }
+      );
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || "The classroom responses could not be downloaded.");
+      }
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `classroom-${classroomId}-peer-reviews.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      downloadButton.textContent = "Download All Responses";
+    } catch (error) {
+      completionStatus.textContent = error.message;
+      downloadButton.textContent = "Download All Responses";
+    } finally {
+      downloadButton.disabled = false;
+    }
+  });
+
   async function verifyClosedClassroom() {
     const classroomId = sessionStorage.getItem(storageKeys.classroomId);
     const sessionId = sessionStorage.getItem(storageKeys.sessionId);
@@ -400,31 +511,28 @@
     }
 
     try {
-      const response = await fetch(
-        `/api/classrooms/${encodeURIComponent(classroomId)}/status?sessionId=${encodeURIComponent(sessionId)}`,
-        { headers: { "x-classroom-token": accessToken } }
-      );
-      const state = await response.json();
-
-      if (!response.ok || state.status !== "closed") {
+      const state = await fetchStatus();
+      if (state.status !== "closed") {
         window.location.replace("/");
         return;
       }
-
       classroomInput.value = classroomId;
-      status.textContent = `Classroom ${classroomId} is closed. Peer review is ready.`;
       const submission = state.assignedSubmission;
       if (submission) {
         assignedSubmission = submission;
         drawAssignedGraph(submission);
       }
       page.hidden = false;
+      if (state.reviewSubmitted) setReviewComplete(state);
       requestAnimationFrame(() => {
         if (submission) drawAssignedGraph(submission);
       });
       window.addEventListener("resize", () => {
         if (submission) drawAssignedGraph(submission);
       });
+      statusTimer = setInterval(() => {
+        if (!sending) fetchStatus().catch(error => { status.textContent = error.message; });
+      }, 3000);
     } catch {
       status.textContent = "Could not verify the classroom. Return to the worksheet and try again.";
       page.hidden = false;
