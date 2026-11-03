@@ -486,7 +486,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `classroom-${classroomId}-peer-reviews.csv`;
+      link.download = `classroom-${classroomId}-all-responses.csv`;
       document.body.appendChild(link);
       link.click();
       link.remove();
