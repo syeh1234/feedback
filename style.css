@@ -826,3 +826,23 @@ body {
   .student-workspace .data-panel { display: none; }
   .student-workspace .chart-wrap { min-height: 320px; }
 }
+
+
+/* Use the available desktop width instead of centering a narrow worksheet. */
+@media (min-width: 901px) {
+  body {
+    padding: 10px 18px;
+  }
+
+  .sheet {
+    width: 100%;
+    max-width: none;
+    min-height: calc(100dvh - 20px);
+    padding: clamp(18px, 2vw, 36px);
+  }
+
+  .two-column-layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(420px, .85fr);
+    gap: 28px;
+  }
+}
