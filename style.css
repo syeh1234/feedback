@@ -624,3 +624,17 @@ body {
   }
 }
 
+
+
+/* Peer-review completion state */
+.review-complete-panel {
+  margin-top: 28px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f7f7f7;
+}
+.review-complete-panel h2 { margin-bottom: 8px; }
+.review-complete-panel p { margin-bottom: 18px; }
+.review-complete-panel .pill { min-height: 42px; padding: 11px 18px; }
+.pill:disabled { opacity: .55; cursor: wait; }
