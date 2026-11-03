@@ -491,7 +491,14 @@
       link.click();
       link.remove();
       URL.revokeObjectURL(url);
-      downloadButton.textContent = "Download All Responses";
+
+      // The server clears the classroom once the complete CSV has been prepared.
+      // Clear this browser's old identity too, so it can join the same code afresh.
+      Object.values(storageKeys).forEach(key => sessionStorage.removeItem(key));
+      if (statusTimer) clearInterval(statusTimer);
+      status.textContent = `Classroom ${classroomId} has been cleared and is ready to reuse.`;
+      completionStatus.textContent = `Download complete. Classroom ${classroomId} is now available for a new activity.`;
+      downloadButton.hidden = true;
     } catch (error) {
       completionStatus.textContent = error.message;
       downloadButton.textContent = "Download All Responses";
@@ -531,7 +538,17 @@
         if (submission) drawAssignedGraph(submission);
       });
       statusTimer = setInterval(() => {
-        if (!sending) fetchStatus().catch(error => { status.textContent = error.message; });
+        if (!sending) fetchStatus().catch(error => {
+          if (error.message.includes("Classroom not found")) {
+            Object.values(storageKeys).forEach(key => sessionStorage.removeItem(key));
+            clearInterval(statusTimer);
+            status.textContent = `Classroom ${classroomId} has been cleared after download and is ready to reuse.`;
+            completionStatus.textContent = "This classroom has been reset. You can use the same classroom code for a new activity.";
+            downloadButton.hidden = true;
+          } else {
+            status.textContent = error.message;
+          }
+        });
       }, 3000);
     } catch {
       status.textContent = "Could not verify the classroom. Return to the worksheet and try again.";
