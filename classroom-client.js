@@ -69,7 +69,7 @@
     busy = value;
     joinButton.disabled = value;
     submitButton.disabled = value || !joined || Boolean(classroomState?.submitted) || classroomState?.status === "closed";
-    closeButton.disabled = value || !joined || classroomState?.status === "closed" || (classroomState?.submissionCount || 0) < 2;
+    closeButton.disabled = value || !joined || classroomState?.status === "closed" || (classroomState?.submissionCount || 0) < 2 || (classroomState?.submissionCount || 0) < (classroomState?.participantCount || 0);
   }
 
   function renderAssignedSubmission(submission) {
@@ -136,7 +136,7 @@
 
     if (state.status === "closed") {
       classroomStatus.textContent = `Classroom ${state.classroomId} is closed. Peer assignments are ready.`;
-      if (spreadsheetStatus) spreadsheetStatus.textContent = "The classroom CSV is available to download.";
+      if (spreadsheetStatus) spreadsheetStatus.textContent = "Peer review is underway. Class responses will be available after everyone finishes.";
       if (state.assignedSubmission) renderAssignedSubmission(state.assignedSubmission);
       else if (assignedReview) assignedReview.hidden = true;
     } else {
@@ -144,7 +144,7 @@
       if (spreadsheetStatus) {
         spreadsheetStatus.textContent = state.submitted
           ? "Your submission is saved. Waiting for the classroom to close."
-          : "Submit your worksheet when you are ready. Peer work stays hidden until the classroom closes.";
+          : "Submit your graph when you are ready. Peer work stays hidden until everyone has submitted.";
       }
       if (assignedReview) assignedReview.hidden = true;
     }
