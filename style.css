@@ -1056,3 +1056,9 @@ body {
     max-width: 100%;
   }
 }
+
+
+/* Add breathing room between the data table and Evidence section. */
+.student-workspace #evidence {
+  margin-top: 28px;
+}
