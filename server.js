@@ -338,8 +338,33 @@ async function handleApi(request, response, url) {
       return;
     }
 
-    const headers = ["Classroom ID", "Reviewer Session ID", "Reviewed Student Session ID", "Graph Title", "Pre-feedback", "Clarify", "Value", "State Concerns", "Suggest", "Submitted At"];
-    const rows = [headers, ...Object.values(classroom.reviews).map(review => [
+    // Export the original student worksheet submissions first, followed by peer feedback.
+    const submissionHeaders = [
+      "Classroom ID", "Student Session ID", "Submitted At", "Claim", "Graph Type",
+      "Graph Title", "Categories", "Series", "X-axis Label", "Y-axis Label",
+      "Additional Questions", "Graph Data (JSON)"
+    ];
+    const submissionRows = Object.values(classroom.submissions).map(submission => [
+      classroom.id,
+      submission.sessionId,
+      submission.submittedAt,
+      submission.claim,
+      submission.chartType,
+      submission.graphTitle,
+      submission.categories,
+      submission.series,
+      submission.xAxisLabel,
+      submission.yAxisLabel,
+      submission.additionalQuestions,
+      JSON.stringify(submission.graphData || {})
+    ]);
+
+    const reviewHeaders = [
+      "Classroom ID", "Reviewer Session ID", "Reviewed Student Session ID",
+      "Graph Title", "Pre-feedback", "Clarify", "Value", "State Concerns",
+      "Suggest", "Submitted At"
+    ];
+    const reviewRows = Object.values(classroom.reviews).map(review => [
       classroom.id,
       review.reviewerSessionId,
       review.reviewedSessionId,
@@ -350,7 +375,17 @@ async function handleApi(request, response, url) {
       review.concerns,
       review.suggestions,
       review.submittedAt
-    ])];
+    ]);
+
+    const rows = [
+      ["STUDENT WORKSHEET RESPONSES"],
+      submissionHeaders,
+      ...submissionRows,
+      [],
+      ["PEER REVIEW RESPONSES"],
+      reviewHeaders,
+      ...reviewRows
+    ];
     const csv = "\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\r\n") + "\r\n";
 
     // The download is the end of this classroom run. Remove its data so the same
