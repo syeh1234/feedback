@@ -6,46 +6,8 @@ const crypto = require("node:crypto");
 const root = __dirname;
 const port = Number(process.env.PORT || 3000);
 const databasePath = path.resolve(process.env.CLASSROOM_DATABASE_PATH || path.join(root, "classroom-data.json"));
-const csvPath = path.resolve(process.env.CLASSROOM_CSV_PATH || path.join(root, "peer-review-submissions.csv"));
-const columns = [
-  "classroomId",
-  "submittedAt",
-  "sessionId",
-  "claim",
-  "chartType",
-  "graphTitle",
-  "categories",
-  "series",
-  "xAxisLabel",
-  "yAxisLabel",
-  "additionalQuestions",
-  "graphData"
-];
-
 let database = { classrooms: {} };
 let writeQueue = Promise.resolve();
-
-function csvEscape(value) {
-  return `"${String(value ?? "").replaceAll("\"", "\"\"")}"`;
-}
-
-function makeCsv() {
-  const rows = [columns.map(csvEscape).join(",")];
-
-  for (const [classroomId, classroom] of Object.entries(database.classrooms)) {
-    for (const submission of Object.values(classroom.submissions)) {
-      rows.push(columns.map(column => csvEscape(
-          column === "classroomId"
-            ? classroomId
-            : column === "graphData"
-              ? JSON.stringify(submission.graphData)
-              : submission[column]
-      )).join(","));
-    }
-  }
-
-  return `${rows.join("\r\n")}\r\n`;
-}
 
 function persistDatabase() {
   writeQueue = writeQueue.catch(() => {}).then(async () => {
@@ -53,7 +15,6 @@ function persistDatabase() {
     const temporaryPath = `${databasePath}.tmp`;
     await fs.writeFile(temporaryPath, serialized, "utf8");
     await fs.rename(temporaryPath, databasePath);
-    await fs.writeFile(csvPath, makeCsv(), "utf8");
   });
   return writeQueue;
 }
@@ -69,6 +30,10 @@ async function loadDatabase() {
     if (error.code !== "ENOENT") throw error;
     await persistDatabase();
   }
+}
+
+function csvEscape(value) {
+  return `"${String(value ?? "").replaceAll('"', '""')}"`;
 }
 
 function sendJson(response, status, value) {
@@ -160,8 +125,12 @@ function shuffle(items) {
 
 function assignReviews(classroom) {
   const submitterIds = Object.keys(classroom.submissions);
+  const participantCount = Object.keys(classroom.participants).length;
   if (submitterIds.length < 2) {
     throw Object.assign(new Error("At least two students must submit before the classroom can close."), { status: 409 });
+  }
+  if (submitterIds.length !== participantCount) {
+    throw Object.assign(new Error("Every joined student must send their graph before peer review can begin."), { status: 409 });
   }
 
   const orderedIds = shuffle(submitterIds);
@@ -169,12 +138,15 @@ function assignReviews(classroom) {
     sessionId,
     orderedIds[(index + 1) % orderedIds.length]
   ]));
+  classroom.reviews ||= {};
   classroom.status = "closed";
   classroom.closedAt = new Date().toISOString();
 }
 
 function classroomStatus(classroom, sessionId) {
   const assignedId = classroom.assignments?.[sessionId];
+  const reviewCount = Object.keys(classroom.reviews || {}).length;
+  const reviewTargetCount = Object.keys(classroom.assignments || {}).length;
   return {
     classroomId: classroom.id,
     sessionId,
@@ -182,6 +154,10 @@ function classroomStatus(classroom, sessionId) {
     participantCount: Object.keys(classroom.participants).length,
     submissionCount: Object.keys(classroom.submissions).length,
     submitted: Boolean(classroom.submissions[sessionId]),
+    reviewSubmitted: Boolean(classroom.reviews?.[sessionId]),
+    reviewCount,
+    reviewTargetCount,
+    allReviewsSubmitted: reviewTargetCount > 0 && reviewCount === reviewTargetCount,
     closedAt: classroom.closedAt || null,
     assignedSubmission: assignedId ? classroom.submissions[assignedId] : null
   };
@@ -214,7 +190,8 @@ async function handleApi(request, response, url) {
         status: "open",
         participants: {},
         submissions: {},
-        assignments: {}
+        assignments: {},
+        reviews: {}
       };
       database.classrooms[classroomId] = classroom;
     }
@@ -308,6 +285,82 @@ async function handleApi(request, response, url) {
     return;
   }
 
+  if (request.method === "POST" && action === "reviews") {
+    const body = await readJson(request);
+    const sessionId = validateSessionId(body.sessionId);
+    requireParticipant(classroom, sessionId, body.accessToken);
+
+    if (classroom.status !== "closed") {
+      sendJson(response, 409, { error: "Peer review is not open yet." });
+      return;
+    }
+    if (!classroom.assignments?.[sessionId]) {
+      sendJson(response, 403, { error: "No peer review is assigned to this student." });
+      return;
+    }
+    classroom.reviews ||= {};
+    if (classroom.reviews[sessionId]) {
+      sendJson(response, 409, { error: "Your peer review has already been sent." });
+      return;
+    }
+
+    const source = body.review || {};
+    const review = {
+      submittedAt: new Date().toISOString(),
+      reviewerSessionId: sessionId,
+      reviewedSessionId: classroom.assignments[sessionId],
+      preFeedback: requiredText(source.preFeedback, 10000, "Pre-feedback"),
+      clarify: requiredText(source.clarify, 10000, "Clarify"),
+      value: requiredText(source.value, 10000, "Value"),
+      concerns: requiredText(source.concerns, 10000, "State Concerns"),
+      suggestions: requiredText(source.suggestions, 10000, "Suggest")
+    };
+
+    classroom.reviews[sessionId] = review;
+    try {
+      await persistDatabase();
+    } catch (error) {
+      delete classroom.reviews[sessionId];
+      throw error;
+    }
+
+    sendJson(response, 201, classroomStatus(classroom, sessionId));
+    return;
+  }
+
+  if (request.method === "GET" && action === "reviews" && parts[4] === "download") {
+    const sessionId = validateSessionId(url.searchParams.get("sessionId"));
+    requireParticipant(classroom, sessionId, request.headers["x-classroom-token"]);
+    classroom.reviews ||= {};
+    const reviewTargetCount = Object.keys(classroom.assignments || {}).length;
+    if (classroom.status !== "closed" || !reviewTargetCount || Object.keys(classroom.reviews).length !== reviewTargetCount) {
+      sendJson(response, 409, { error: "All students must send their peer reviews before the class responses can be downloaded." });
+      return;
+    }
+
+    const headers = ["Classroom ID", "Reviewer Session ID", "Reviewed Student Session ID", "Graph Title", "Pre-feedback", "Clarify", "Value", "State Concerns", "Suggest", "Submitted At"];
+    const rows = [headers, ...Object.values(classroom.reviews).map(review => [
+      classroom.id,
+      review.reviewerSessionId,
+      review.reviewedSessionId,
+      classroom.submissions[review.reviewedSessionId]?.graphTitle || "",
+      review.preFeedback,
+      review.clarify,
+      review.value,
+      review.concerns,
+      review.suggestions,
+      review.submittedAt
+    ])];
+    const csv = "\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\r\n") + "\r\n";
+    response.writeHead(200, {
+      "content-type": "text/csv; charset=utf-8",
+      "content-disposition": `attachment; filename="classroom-${classroom.id}-peer-reviews.csv"`,
+      "cache-control": "no-store"
+    });
+    response.end(csv);
+    return;
+  }
+
   if (request.method === "POST" && action === "close") {
     const body = await readJson(request);
     const sessionId = validateSessionId(body.sessionId);
@@ -339,7 +392,7 @@ async function serveStatic(response, url) {
     response.end("Forbidden");
     return;
   }
-  if ([databasePath, csvPath].includes(resolvedPath) || resolvedPath.endsWith(".tmp")) {
+  if (resolvedPath === databasePath || resolvedPath.endsWith(".tmp")) {
     response.writeHead(404);
     response.end("Not found");
     return;
