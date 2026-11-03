@@ -117,6 +117,7 @@
     sessionStorage.setItem(storageKeys.classroomId, state.classroomId);
     classroomInput.readOnly = true;
     sessionInput.readOnly = true;
+    classroomInput.closest(".student-bar")?.classList.add("classroom-joined");
 
     if (state.status === "closed" && window.location.pathname !== "/peer-review.html") {
       window.location.assign("/peer-review.html");
