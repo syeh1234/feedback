@@ -22,6 +22,10 @@
     <span id="classroomStatus" class="classroom-status" role="status" aria-live="polite"></span>
   </div>
 
+
+
+  <div class="two-column-layout student-layout">
+    <div class="fixed-workspace student-workspace">
   <header>
     <h1>Investigating AP Statistics Enrollment</h1>
 
@@ -68,29 +72,6 @@
       </table>
     </div>
   </header>
-
-  <!-- 1. Claim -->
-  <section id="claim">
-    <h2>1&nbsp; Claim</h2>
-
-    <p>
-      What statement do you want to make about AP Statistics enrollment across the four schools? Your claim will need to be 
-      supported by a graph you will build in the next step. 
-
-    </p>
-
-    <textarea
-      id="claimText"
-      class="claim-box"
-      aria-label="Your claim"
-    ></textarea>
-
-    <div class="nav-row">
-      <button class="pill" data-jump="evidence" type="button">
-        On to Evidence
-      </button>
-    </div>
-  </section>
 
   <!-- 2. Evidence -->
   <section id="evidence">
@@ -396,6 +377,31 @@
     </div>
   </section>
 
+    </div>
+    <aside class="scrolling-questions student-questions" aria-label="Student responses">
+  <!-- 1. Claim -->
+  <section id="claim">
+    <h2>1&nbsp; Claim</h2>
+
+    <p>
+      What statement do you want to make about AP Statistics enrollment across the four schools? Your claim will need to be 
+      supported by a graph you will build in the next step. 
+
+    </p>
+
+    <textarea
+      id="claimText"
+      class="claim-box"
+      aria-label="Your claim"
+    ></textarea>
+
+    <div class="nav-row">
+      <button class="pill" data-jump="evidence" type="button">
+        On to Evidence
+      </button>
+    </div>
+  </section>
+
   <!-- 3. Question -->
   <section id="question">
     <h2>3&nbsp; Question</h2>
@@ -436,6 +442,8 @@
       <dl id="assignedReviewDetails" class="assigned-review-details"></dl>
     </div>
   </section>
+    </aside>
+  </div>
 </main>
 </body>
 </html>
