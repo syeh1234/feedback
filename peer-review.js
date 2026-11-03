@@ -550,8 +550,15 @@
           }
         });
       }, 3000);
-    } catch {
-      status.textContent = "Could not verify the classroom. Return to the worksheet and try again.";
+    } catch (error) {
+      // Clear stale browser identity when the server has deleted this classroom.
+      if (/Classroom not found|Join this classroom before continuing/i.test(error.message)) {
+        Object.values(storageKeys).forEach(key => sessionStorage.removeItem(key));
+        window.location.replace("/");
+        return;
+      }
+
+      status.textContent = "Could not verify the classroom. Check your connection and return to the worksheet to rejoin.";
       page.hidden = false;
     }
   }
