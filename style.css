@@ -655,11 +655,25 @@ body {
 .fixed-workspace {
   min-width: 0;
   min-height: 0;
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior-y: contain;
   display: flex;
   flex-direction: column;
+}
+.fixed-workspace > header,
+.fixed-workspace > section {
+  flex: 0 0 auto;
+}
+.student-workspace #evidence {
+  flex: 0 0 auto;
+}
+.student-workspace .builder {
+  flex: 0 0 auto;
+}
+.peer-workspace .peer-graph-section {
+  flex: 0 0 auto;
 }
 .scrolling-questions {
   min-width: 0;
@@ -803,7 +817,7 @@ body {
 .peer-questions {
   padding-top: 8px;
 }
-@media (max-width: 900px) {
+@media (max-width: 760px) {
   body { padding: 12px; }
   .sheet { width: 100%; min-height: 0; padding: 18px; }
   .two-column-layout {
