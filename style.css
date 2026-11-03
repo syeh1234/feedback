@@ -864,14 +864,18 @@ body {
 }
 
 
-/* Keep the graph builder at a stable size as fields/series are added or removed. */
+/* Keep the graph builder fixed-height; changing series must not resize the workspace. */
 .student-workspace .builder {
+  box-sizing: border-box;
+  flex: 0 0 clamp(380px, 52vh, 520px);
   height: clamp(380px, 52vh, 520px);
-  min-height: 380px;
+  min-height: 0;
+  max-height: clamp(380px, 52vh, 520px);
   align-items: stretch;
 }
 
 .student-workspace .data-panel {
+  box-sizing: border-box;
   min-height: 0;
   height: 100%;
   overflow-x: hidden;
@@ -884,7 +888,6 @@ body {
   height: 100%;
   min-height: 0;
   max-height: 100%;
-  flex: 0 0 auto;
   overflow: hidden;
 }
 
@@ -894,12 +897,14 @@ body {
 
 @media (max-width: 760px) {
   .student-workspace .builder {
+    flex: 0 0 460px;
     height: 460px;
-    min-height: 460px;
+    min-height: 0;
+    max-height: 460px;
   }
 
   .student-workspace .data-panel {
-    height: auto;
+    height: 100%;
     max-height: 100%;
   }
 
@@ -911,7 +916,8 @@ body {
 
 @media (max-width: 520px) {
   .student-workspace .builder {
+    flex: 0 0 360px;
     height: 360px;
-    min-height: 360px;
+    max-height: 360px;
   }
 }
