@@ -352,6 +352,17 @@ async function handleApi(request, response, url) {
       review.submittedAt
     ])];
     const csv = "\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\r\n") + "\r\n";
+
+    // The download is the end of this classroom run. Remove its data so the same
+    // classroom code can create a fresh classroom the next time students join.
+    delete database.classrooms[classroomId];
+    try {
+      await persistDatabase();
+    } catch (error) {
+      database.classrooms[classroomId] = classroom;
+      throw error;
+    }
+
     response.writeHead(200, {
       "content-type": "text/csv; charset=utf-8",
       "content-disposition": `attachment; filename="classroom-${classroom.id}-peer-reviews.csv"`,
