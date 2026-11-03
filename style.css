@@ -862,3 +862,56 @@ body {
     gap: 28px;
   }
 }
+
+
+/* Keep the graph builder at a stable size as fields/series are added or removed. */
+.student-workspace .builder {
+  height: clamp(380px, 52vh, 520px);
+  min-height: 380px;
+  align-items: stretch;
+}
+
+.student-workspace .data-panel {
+  min-height: 0;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+}
+
+.student-workspace .chart-wrap {
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  flex: 0 0 auto;
+  overflow: hidden;
+}
+
+.student-workspace .chart-wrap.pie-scroll {
+  overflow-y: auto;
+}
+
+@media (max-width: 760px) {
+  .student-workspace .builder {
+    height: 460px;
+    min-height: 460px;
+  }
+
+  .student-workspace .data-panel {
+    height: auto;
+    max-height: 100%;
+  }
+
+  .student-workspace .chart-wrap {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .student-workspace .builder {
+    height: 360px;
+    min-height: 360px;
+  }
+}
