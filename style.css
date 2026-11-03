@@ -1062,3 +1062,12 @@ body {
 .student-workspace #evidence {
   margin-top: 28px;
 }
+
+
+/* Once a classroom is joined, keep the status message but hide the code field. */
+.student-bar.classroom-joined .classroom-id-field {
+  display: none;
+}
+.student-bar.classroom-joined #joinClassroom {
+  display: none;
+}
