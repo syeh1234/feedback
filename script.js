@@ -106,6 +106,12 @@
   const dataPanel = document.querySelector(".data-panel");
   const variableCreator = document.querySelector(".variable-creator");
 
+  // Portal the editor to <body> so scroll containers and transformed
+  // workspace ancestors cannot clip the popup.
+  if (variablePopup && variablePopup.parentElement !== document.body) {
+    document.body.appendChild(variablePopup);
+  }
+
   let expressionTokens = [];
   const expressionOperators = ["+", "-", "*", "/"];
 
