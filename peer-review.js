@@ -543,8 +543,8 @@
           if (error.message.includes("Classroom not found")) {
             Object.values(storageKeys).forEach(key => sessionStorage.removeItem(key));
             clearInterval(statusTimer);
-            status.textContent = `Classroom ${classroomId} has been cleared after download and is ready to reuse.`;
-            completionStatus.textContent = "This classroom has been reset. You can use the same classroom code for a new activity.";
+            status.textContent = "This classroom session is no longer active.";
+            completionStatus.textContent = "The classroom session has ended."
             downloadButton.hidden = true;
           } else {
             status.textContent = error.message;
