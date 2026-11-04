@@ -59,8 +59,7 @@
     "scatter",
     "line",
     "pie",
-    "histogram",
-    "boxplot"
+    "histogram"
   ];
 
   function getCategories() {
@@ -918,27 +917,6 @@
       return;
     }
 
-    if (chartType === "boxplot") {
-      const boxW = (right - left) * 0.25;
-
-      ctx.beginPath();
-      ctx.moveTo(left + 12, midY);
-      ctx.lineTo(right - 12, midY);
-      ctx.moveTo(left + 12, midY - 12);
-      ctx.lineTo(left + 12, midY + 12);
-      ctx.moveTo(right - 12, midY - 12);
-      ctx.lineTo(right - 12, midY + 12);
-      ctx.stroke();
-
-      ctx.strokeRect(midX - boxW / 2, midY - 22, boxW, 44);
-
-      ctx.beginPath();
-      ctx.moveTo(midX, midY - 22);
-      ctx.lineTo(midX, midY + 22);
-      ctx.stroke();
-      return;
-    }
-
     ctx.beginPath();
     ctx.moveTo(left, top);
     ctx.lineTo(left, bottom);
@@ -1263,105 +1241,6 @@
     drawLegend(fields, plot.left, 16);
   }
 
-  function drawBoxplots(w, h, fields) {
-    const allValues = fields.flatMap(getValues);
-    if (!allValues.length) return;
-
-    const min = Math.min(...allValues);
-    const max = Math.max(...allValues);
-    const range = max - min || 1;
-
-    const plot = {
-      left: 58,
-      right: 24,
-      top: legendUsesTwoRows(fields, w) ? 52 : 40,
-      bottom: 65
-    };
-
-    plot.plotW = w - plot.left - plot.right;
-    plot.plotH = h - plot.top - plot.bottom;
-
-    const x = value =>
-      plot.left + ((value - min) / range) * plot.plotW;
-
-    // Shared numeric axis.
-    ctx.strokeStyle = "#9299a3";
-    ctx.beginPath();
-    ctx.moveTo(plot.left, plot.top + plot.plotH / 2);
-    ctx.lineTo(plot.left + plot.plotW, plot.top + plot.plotH / 2);
-    ctx.stroke();
-
-    // Slightly offset boxplots vertically to keep them distinguishable.
-    const spacing = Math.min(36, plot.plotH / Math.max(1, fields.length));
-    const centerY = plot.top + plot.plotH / 2;
-    const boxH = Math.min(28, spacing * 0.8);
-
-    fields.forEach((field, seriesIndex) => {
-      const nums = getValues(field)
-        .filter(Number.isFinite)
-        .sort((a, b) => a - b);
-
-      if (!nums.length) return;
-
-      const q = p => nums[Math.floor((nums.length - 1) * p)];
-      const minV = nums[0];
-      const q1 = q(0.25);
-      const median = q(0.5);
-      const q3 = q(0.75);
-      const maxV = nums[nums.length - 1];
-
-      const y = centerY
-        + (seriesIndex - (fields.length - 1) / 2) * spacing;
-
-      const color = palette[seriesIndex % palette.length];
-
-      ctx.strokeStyle = color;
-      ctx.fillStyle = color;
-      ctx.lineWidth = 2;
-
-      // Whiskers and end caps.
-      ctx.beginPath();
-      ctx.moveTo(x(minV), y);
-      ctx.lineTo(x(maxV), y);
-      ctx.moveTo(x(minV), y - boxH * 0.35);
-      ctx.lineTo(x(minV), y + boxH * 0.35);
-      ctx.moveTo(x(maxV), y - boxH * 0.35);
-      ctx.lineTo(x(maxV), y + boxH * 0.35);
-      ctx.stroke();
-
-      // Interquartile box and median.
-      ctx.globalAlpha = 0.35;
-      ctx.fillRect(x(q1), y - boxH / 2, Math.max(2, x(q3) - x(q1)), boxH);
-      ctx.globalAlpha = 1;
-
-      ctx.strokeRect(
-        x(q1),
-        y - boxH / 2,
-        Math.max(2, x(q3) - x(q1)),
-        boxH
-      );
-
-      ctx.beginPath();
-      ctx.moveTo(x(median), y - boxH / 2);
-      ctx.lineTo(x(median), y + boxH / 2);
-      ctx.stroke();
-    });
-
-    // Numeric ticks.
-    ctx.font = "11px Arial";
-    ctx.fillStyle = "#343b44";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-
-    for (let i = 0; i <= 4; i++) {
-      const value = min + (range * i) / 4;
-      const xx = plot.left + (plot.plotW * i) / 4;
-      ctx.fillText(String(Number(value.toFixed(1))), xx, plot.top + plot.plotH + 8);
-    }
-
-    drawLegend(fields, plot.left, 16);
-  }
-
   function updateFieldChips() {
     let chips = chartWrap.querySelector(".graph-fields");
 
@@ -1453,10 +1332,6 @@
 
       case "histogram":
         drawHistogram(width, canvasHeight, fields);
-        break;
-
-      case "boxplot":
-        drawBoxplots(width, canvasHeight, fields);
         break;
 
       default:
