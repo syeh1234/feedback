@@ -1071,3 +1071,31 @@ body {
 .student-bar.classroom-joined #joinClassroom {
   display: none;
 }
+
+
+/* Put Clear graph in the open sixth position beside the five graph types. */
+.student-workspace .chart-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(84px, 1fr);
+  align-items: stretch;
+  gap: 5px;
+}
+.student-workspace .chart-type-picker {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.student-workspace .reset-button {
+  align-self: stretch;
+  justify-self: stretch;
+  margin: 0;
+}
+@media (max-width: 760px) {
+  .student-workspace .chart-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .student-workspace .chart-type-picker {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .student-workspace .reset-button {
+    justify-self: end;
+  }
+}
