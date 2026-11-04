@@ -1118,3 +1118,20 @@ body {
 .student-workspace .variable-popup::before {
   display: none;
 }
+
+
+/* The variable editor is portaled to body, outside all clipped workspaces. */
+.variable-popup {
+  position: fixed !important;
+  z-index: 2147483000 !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: min(480px, calc(100vw - 28px)) !important;
+  max-height: min(80vh, 700px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  transform: translate(-50%, -50%) !important;
+}
+.variable-popup::before { display: none !important; }
