@@ -66,6 +66,7 @@ textarea:focus { border-color: #777; background: #f2f2f2; }
 .chart-type-button .chart-icon { display: block; width: 27px; height: 27px; object-fit: contain; }
 .chart-type-button:hover { border-color: #777; background: #f4f4f4; }
 .chart-type-button.active { border-color: #222; background: #222; color: white; box-shadow: 0 0 0 1px #222; }
+.chart-type-button.active .chart-icon { filter: invert(1); }
 .chart-type-button:focus-visible { outline: 2px solid #777; outline-offset: 2px; }
 .reset-button { margin-left: auto; padding: 9px 12px; font-size: 12px; }
 .chart-wrap { display: flex; position: relative; min-width: 0; height: 340px; align-items: center; justify-content: center; padding: 12px; border: 1px solid #d5d5d5; border-radius: 10px; background: #f7f7f7; }
