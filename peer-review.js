@@ -24,6 +24,30 @@
   let statusTimer = null;
   const palette = ["#3478b8", "#e28b35", "#32936f", "#9b70b5", "#d45d79", "#7b8491"];
   let assignedSubmission = null;
+
+  // Require a non-empty response before each section can be advanced.
+  const requiredResponses = [
+    { input: "claimText", button: "onToFeedback" },
+    { input: "clarifyText", button: "onToValue" },
+    { input: "valueText", button: "onToStateConcerns" },
+    { input: "concernsText", button: "onToSuggest" },
+    { input: "suggestionsText", button: "sendToStudent" }
+  ];
+
+  function updateResponseGates() {
+    requiredResponses.forEach(({ input, button }) => {
+      const responseBox = document.getElementById(input);
+      const actionButton = document.getElementById(button);
+      if (responseBox && actionButton) {
+        actionButton.disabled = !responseBox.value.trim();
+      }
+    });
+  }
+
+  requiredResponses.forEach(({ input }) => {
+    document.getElementById(input)?.addEventListener("input", updateResponseGates);
+  });
+  updateResponseGates();
   const storageKeys = {
     classroomId: "ap-statistics-current-classroom",
     sessionId: "ap-statistics-current-session",
@@ -31,6 +55,7 @@
   };
 
   onToFeedback?.addEventListener("click", () => {
+    if (!document.getElementById("claimText")?.value.trim()) return;
     if (assignedSubmission) {
       studentClaim.textContent = assignedSubmission.claim || "(No claim provided)";
       studentQuestion.textContent = assignedSubmission.additionalQuestions || "(No questions provided)";
@@ -42,18 +67,21 @@
   });
 
   onToValue?.addEventListener("click", () => {
+    if (!document.getElementById("clarifyText")?.value.trim()) return;
     if (!valueSection) return;
     valueSection.hidden = false;
     valueSection.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   onToStateConcerns?.addEventListener("click", () => {
+    if (!document.getElementById("valueText")?.value.trim()) return;
     if (!stateConcernsSection) return;
     stateConcernsSection.hidden = false;
     stateConcernsSection.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   onToSuggest?.addEventListener("click", () => {
+    if (!document.getElementById("concernsText")?.value.trim()) return;
     if (!suggestSection) return;
     suggestSection.hidden = false;
     suggestSection.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -429,6 +457,8 @@
   }
 
   sendToStudent?.addEventListener("click", async () => {
+    updateResponseGates();
+    if (requiredResponses.some(({ input }) => !document.getElementById(input)?.value.trim())) return;
     if (sending || reviewState?.reviewSubmitted || !assignedSubmission) return;
     const classroomId = sessionStorage.getItem(storageKeys.classroomId);
     const sessionId = sessionStorage.getItem(storageKeys.sessionId);
