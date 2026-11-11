@@ -338,55 +338,63 @@ async function handleApi(request, response, url) {
       return;
     }
 
-    // Export the original student worksheet submissions first, followed by peer feedback.
-    const submissionHeaders = [
-      "Classroom ID", "Student Session ID", "Submitted At", "Claim", "Graph Type",
-      "Graph Title", "Categories", "Series", "X-axis Label", "Y-axis Label",
-      "Additional Questions", "Graph Data (JSON)"
+    // Export one row per student, pairing their worksheet with the review
+    // written about that student's submission.
+    const headers = [
+      "Claim of Student",
+      "Questions of Student",
+      "Graph Created by Student",
+      "Pre-feedback of Reviewer",
+      "Clarify of Reviewer",
+      "Value of Reviewer",
+      "State Concerns of Reviewer",
+      "Suggest of Reviewer"
     ];
-    const submissionRows = Object.values(classroom.submissions).map(submission => [
-      classroom.id,
-      submission.sessionId,
-      submission.submittedAt,
-      submission.claim,
-      submission.chartType,
-      submission.graphTitle,
-      submission.categories,
-      submission.series,
-      submission.xAxisLabel,
-      submission.yAxisLabel,
-      submission.additionalQuestions,
-      JSON.stringify(submission.graphData || {})
-    ]);
 
-    const reviewHeaders = [
-      "Classroom ID", "Reviewer Session ID", "Reviewed Student Session ID",
-      "Graph Title", "Pre-feedback", "Clarify", "Value", "State Concerns",
-      "Suggest", "Submitted At"
-    ];
-    const reviewRows = Object.values(classroom.reviews).map(review => [
-      classroom.id,
-      review.reviewerSessionId,
-      review.reviewedSessionId,
-      classroom.submissions[review.reviewedSessionId]?.graphTitle || "",
-      review.preFeedback,
-      review.clarify,
-      review.value,
-      review.concerns,
-      review.suggestions,
-      review.submittedAt
-    ]);
+    const reviewsByStudent = new Map(
+      Object.values(classroom.reviews).map(review => [review.reviewedSessionId, review])
+    );
+
+    function describeGraph(submission) {
+      let graphData = submission.graphData || {};
+      if (typeof graphData === "string") {
+        try { graphData = JSON.parse(graphData); } catch { graphData = {}; }
+      }
+
+      const details = {
+        type: submission.chartType || "",
+        title: submission.graphTitle || "",
+        xAxisLabel: submission.xAxisLabel || "",
+        yAxisLabel: submission.yAxisLabel || "",
+        categoriesField: graphData.categoriesField || submission.categories || "",
+        categories: Array.isArray(graphData.categories) ? graphData.categories : [],
+        series: Array.isArray(graphData.series)
+          ? graphData.series.map(item => ({
+              name: item.name || "",
+              values: Array.isArray(item.values) ? item.values : []
+            }))
+          : submission.series || ""
+      };
+      return JSON.stringify(details);
+    }
 
     const rows = [
-      ["STUDENT WORKSHEET RESPONSES"],
-      submissionHeaders,
-      ...submissionRows,
-      [],
-      ["PEER REVIEW RESPONSES"],
-      reviewHeaders,
-      ...reviewRows
+      headers,
+      ...Object.values(classroom.submissions).map(submission => {
+        const review = reviewsByStudent.get(submission.sessionId) || {};
+        return [
+          submission.claim,
+          submission.additionalQuestions,
+          describeGraph(submission),
+          review.preFeedback,
+          review.clarify,
+          review.value,
+          review.concerns,
+          review.suggestions
+        ];
+      })
     ];
-    const csv = "\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\r\n") + "\r\n";
+    const csv = "\\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\\r\\n") + "\\r\\n";
 
     // The download is the end of this classroom run. Remove its data so the same
     // classroom code can create a fresh classroom the next time students join.
