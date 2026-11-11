@@ -502,7 +502,8 @@
     const sessionId = sessionStorage.getItem(storageKeys.sessionId);
     const accessToken = sessionStorage.getItem(storageKeys.accessToken);
     downloadButton.disabled = true;
-    downloadButton.textContent = "Preparing download…";
+    downloadButton.textContent = "Preparing to Download...";
+    let downloadStarted = false;
     try {
       const response = await fetch(
         `/api/classrooms/${encodeURIComponent(classroomId)}/reviews/download?sessionId=${encodeURIComponent(sessionId)}`,
@@ -521,6 +522,8 @@
       link.click();
       link.remove();
       URL.revokeObjectURL(url);
+      downloadStarted = true;
+      downloadButton.textContent = "Download Complete!";
 
       // The server clears the classroom once the complete CSV has been prepared.
       // Clear this browser's old identity too, so it can join the same code afresh.
@@ -528,12 +531,12 @@
       if (statusTimer) clearInterval(statusTimer);
       status.textContent = `Classroom ${classroomId} has been cleared and is ready to reuse.`;
       completionStatus.textContent = `Download complete. Classroom ${classroomId} is now available for a new activity.`;
-      downloadButton.hidden = true;
+      downloadButton.hidden = false;
     } catch (error) {
       completionStatus.textContent = error.message;
       downloadButton.textContent = "Download All Responses";
     } finally {
-      downloadButton.disabled = false;
+      downloadButton.disabled = downloadStarted;
     }
   });
 
