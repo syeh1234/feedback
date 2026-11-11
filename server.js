@@ -338,59 +338,63 @@ async function handleApi(request, response, url) {
       return;
     }
 
-    // Export one row per student, pairing their worksheet with the review
-    // written about that student's submission.
+    // Export one row per student, pairing the student's submission with
+    // the reviewer assigned to that submission.
     const headers = [
-      "Claim of Student",
-      "Questions of Student",
-      "Graph Created by Student",
-      "Pre-feedback of Reviewer",
-      "Clarify of Reviewer",
-      "Value of Reviewer",
-      "State Concerns of Reviewer",
-      "Suggest of Reviewer"
+      "Classroom ID",
+      "Submission Time",
+      "Student ID",
+      "Reviewer ID",
+      "Claim",
+      "Question",
+      "Graph Type",
+      "Graph Title",
+      "Graph Categories Field",
+      "Graph Categories",
+      "Graph Series",
+      "Graph X-axis Label",
+      "Graph Y-axis Label",
+      "Graph Data (JSON)",
+      "Pre-feedback",
+      "Clarify",
+      "Value",
+      "State concerns",
+      "Suggest"
     ];
 
     const reviewsByStudent = new Map(
       Object.values(classroom.reviews).map(review => [review.reviewedSessionId, review])
     );
 
-    function describeGraph(submission) {
-      let graphData = submission.graphData || {};
-      if (typeof graphData === "string") {
-        try { graphData = JSON.parse(graphData); } catch { graphData = {}; }
-      }
-
-      const details = {
-        type: submission.chartType || "",
-        title: submission.graphTitle || "",
-        xAxisLabel: submission.xAxisLabel || "",
-        yAxisLabel: submission.yAxisLabel || "",
-        categoriesField: graphData.categoriesField || submission.categories || "",
-        categories: Array.isArray(graphData.categories) ? graphData.categories : [],
-        series: Array.isArray(graphData.series)
-          ? graphData.series.map(item => ({
-              name: item.name || "",
-              values: Array.isArray(item.values) ? item.values : []
-            }))
-          : submission.series || ""
-      };
-      return JSON.stringify(details);
-    }
-
     const rows = [
       headers,
       ...Object.values(classroom.submissions).map(submission => {
         const review = reviewsByStudent.get(submission.sessionId) || {};
+        let graphData = submission.graphData || {};
+        if (typeof graphData === "string") {
+          try { graphData = JSON.parse(graphData); } catch { graphData = {}; }
+        }
+
         return [
+          classroom.id,
+          submission.submittedAt,
+          submission.sessionId,
+          review.reviewerSessionId || "",
           submission.claim,
           submission.additionalQuestions,
-          describeGraph(submission),
-          review.preFeedback,
-          review.clarify,
-          review.value,
-          review.concerns,
-          review.suggestions
+          submission.chartType,
+          submission.graphTitle,
+          graphData.categoriesField || submission.categories || "",
+          JSON.stringify(graphData.categories || []),
+          JSON.stringify(graphData.series || submission.series || []),
+          submission.xAxisLabel,
+          submission.yAxisLabel,
+          JSON.stringify(graphData),
+          review.preFeedback || "",
+          review.clarify || "",
+          review.value || "",
+          review.concerns || "",
+          review.suggestions || ""
         ];
       })
     ];
