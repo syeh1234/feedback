@@ -247,6 +247,12 @@
           submission
         })
       });
+      // The submission POST succeeded, so update the button immediately.
+      // Do not wait for the follow-up status request or its polling cycle.
+      classroomState = { ...classroomState, submitted: true };
+      submitButton.textContent = "Sent!";
+      submitButton.disabled = true;
+
       const latestState = await api(`/api/classrooms/${encodeURIComponent(classroomId)}/status?sessionId=${encodeURIComponent(sessionId)}`, {
         headers: { "x-classroom-token": sessionStorage.getItem(storageKeys.accessToken) || "" }
       });
