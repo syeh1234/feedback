@@ -69,6 +69,7 @@
     busy = value;
     joinButton.disabled = value;
     submitButton.disabled = value || !joined || Boolean(classroomState?.submitted) || classroomState?.status === "closed";
+    submitButton.textContent = classroomState?.submitted ? "Sent!" : "Send to Reviewer";
     closeButton.disabled = value || !joined || classroomState?.status === "closed" || (classroomState?.submissionCount || 0) < 2 || (classroomState?.submissionCount || 0) < (classroomState?.participantCount || 0);
   }
 
