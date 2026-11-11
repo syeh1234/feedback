@@ -398,7 +398,7 @@ async function handleApi(request, response, url) {
         ];
       })
     ];
-    const csv = "\\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\\r\\n") + "\\r\\n";
+    const csv = "\uFEFF" + rows.map(row => row.map(value => csvEscape(value)).join(",")).join("\r\n") + "\r\n";
 
     // The download is the end of this classroom run. Remove its data so the same
     // classroom code can create a fresh classroom the next time students join.
